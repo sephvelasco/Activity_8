@@ -1,0 +1,44 @@
+---
+- name: Install Nagios (Ubuntu)
+  tags: ubuntu, nagios
+  apt:
+    name: nagios4
+    state: latest
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install Prerequisites (CentOS)
+  tags: prereq, centos
+  package:
+    name:
+      - httpd
+      - php
+      - php-cli
+      - gcc
+      - glibc
+      - gd
+      - net-snmp
+      - openssl-devel
+      - wget
+      - unzip
+    state: present
+  when: ansible_distribution == "CentOS"
+
+- name: Install Nagios (CentOS)
+  unarchive:
+    src: https://github.com/NagiosEnterprises/nagioscore/archive/nagios-4.4.14.tar.gz
+    dest: /usr/bin
+    remote_src: yes
+    mode: 0755
+    owner: root
+    group: root
+  when: ansible_distribution == "CentOS"
+
+- name: Install Nagios Plugins (CentOS)
+  unarchive:
+    src: http://www.nagios-plugins.org/download/nagios-plugins-2.1.1.tar.gz
+    dest: /usr/bin
+    remote_src: yes
+    mode: 0755
+    owner: root
+    group: root
+  when: ansible_distribution == "CentOS"
