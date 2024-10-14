@@ -20,25 +20,13 @@
       - openssl-devel
       - wget
       - unzip
-    state: present
+      - epel-release
+    state: latest
   when: ansible_distribution == "CentOS"
 
 - name: Install Nagios (CentOS)
-  unarchive:
-    src: https://github.com/NagiosEnterprises/nagioscore/archive/nagios-4.4.14.tar.gz
-    dest: /usr/bin
-    remote_src: yes
-    mode: 0755
-    owner: root
-    group: root
-  when: ansible_distribution == "CentOS"
-
-- name: Install Nagios Plugins (CentOS)
-  unarchive:
-    src: http://www.nagios-plugins.org/download/nagios-plugins-2.1.1.tar.gz
-    dest: /usr/bin
-    remote_src: yes
-    mode: 0755
-    owner: root
-    group: root
+  tags: nagios, centos
+  yum:
+    name: nagios
+    state: latest
   when: ansible_distribution == "CentOS"
